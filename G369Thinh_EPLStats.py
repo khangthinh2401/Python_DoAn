@@ -20,4 +20,5 @@ from sklearn.feature_selection import SelectKBest, chi2
 
 
 df = pd.read_csv('./G369Thinh_EPLStats/EPLStats.csv')
-print(df.head(5))
+print('Độ lớn của bảng: ', df.shape)
+print(df[0:5])
