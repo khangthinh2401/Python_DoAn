@@ -38,10 +38,20 @@ def Thoat():
 def Lenh():
     r = sr.Recognizer()
     with sr.Microphone() as Source:
-        # Hiệu chỉnh mic để chuẩn bị nói
         messagebox.showinfo("Nhắc nhở", "Hiệu chỉnh nhiễu trước khi nói!")
         r.adjust_for_ambient_noise(Source, duration=1)
-        # Nhận lời nói ra lệnh từ người dùng thông qua Mic [mặc định] lưu dữ liệu âm thanh vào audio_data
+        messagebox.showinfo(
+            "Sẵn sàng", "Bấm OK để bắt đầu nói tiếng Việt trong 3 giây")
+        audio_data = r.record(Source, duration=3)
+        try:
+            vlenh = r.recognize_google(audio_data, language="vi")
+        except:
+            vlenh = "Tôi không nghe rõ!"
+        vText = gTTS(text=vlenh, lang='vi')
+        vText.save(thinh69_DIR)
+        lbSpeech.config(text=vlenh)
+        lbSpeech.update()
+        playsound.playsound(thinh69_FILE)
 
 
 # B3: Lập GUI
@@ -55,10 +65,22 @@ wn.geometry('800x600')
 wn.resizable(tk.FALSE, tk.FALSE)
 
 # Tiêu đề form = Lập trình Python phân tích dữ liệu các đội bóng Ngoại hạng Anh mùa 06/07 đến mùa 17/18
-t = "69 Nguyễn Khang Thịnh, 211103C, Đồ Án Học Phần: Lập trình Python: EDA EPLStats"
+t = "69 Nguyễn Khang Thịnh, 211103C, Đồ Án Học Phần: Lập trình Python: EDA Car Prices"
 lblDT = tk.Label(wn, text=t, background="yellow", fg="blue", relief=tk.SUNKEN, font=(
     "Arial Bold", 13), borderwidth=3, width=70, height=3)
 lblDT.place(x=10, y=10)
+
+# Các nút lệnh
+# Thoát
+btnThoat = tk.Button(wn, text="Thoát", width=10, height=5, command=Thoat)
+btnThoat.place(x=100, y=135)
+# Xử lý lời nói
+btnNoi = tk.Button(wn, text="Trợ Lý Ảo", width=15, height=5, command=Lenh)
+btnNoi.place(x=200, y=135)
+
+lbSpeech = tk.Label(wn, text='', relief=tk.SUNKEN,
+                    borderwidth=2, width=80, height=3)
+lbSpeech.place(x=10, y=250)
 
 # Lặp vô tận để hiển thị cửa sổ
 wn.mainloop()
