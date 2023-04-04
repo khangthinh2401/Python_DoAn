@@ -5,6 +5,7 @@ import playsound
 
 # tkinter
 import tkinter as tk
+from tkinter import ttk
 from tkinter import messagebox
 
 # thư viện os
@@ -19,9 +20,7 @@ from sklearn import preprocessing  # thư viện tiền xử lý dữ liệu
 from sklearn.feature_selection import SelectKBest, chi2
 
 # B2: Khai báo tên thư mục & File lưu thông tin bài làm
-thinh69_FILE = "thinh69.mp3"  # lưu tên file input
-thinh69_DIR = 'thinh69'      # thư mục lưu các file [trên]
-os.makedirs(thinh69_DIR, exist_ok=True)  # tạo thư mục lưu
+thinh69_FILE = os.path.abspath('') + '\\' + 'thinh69.mp3'  # lưu tên file input
 
 # Các hàm thực hiện chức năng hệ thống
 
@@ -30,7 +29,7 @@ def Thoat():
     traloi = messagebox.askquestion(
         "Xác nhận", "Bạn có muốn thoát hay không (Y/N)?")
     if traloi == "yes":
-        wn.destroy()
+        root.destroy()
 
 
 # Các hàm thực hiện chức năng Speech
@@ -48,39 +47,52 @@ def Lenh():
         except:
             vlenh = "Tôi không nghe rõ!"
         vText = gTTS(text=vlenh, lang='vi')
-        vText.save(thinh69_DIR)
-        lbSpeech.config(text=vlenh)
-        lbSpeech.update()
+        vText.save(thinh69_FILE)
+        lblBody.config(text=vlenh)
+        lblBody.update()
         playsound.playsound(thinh69_FILE)
+
+
+def EDA():
+    df = pd.read_csv('./G369Thinh_CarPrices/CarPrices.csv')
+    print(df)
 
 
 # B3: Lập GUI
 # Tạo một cửa sổ mới
-wn = tk.Tk()
-# Thêm tiêu đề cho cửa sổ
-wn.title("69 Nguyễn Khang Thịnh, 211103C, Đồ Án Học Phần: Lập trình Python, T8.2023")
-# Đặt kích thước cho cửa sổ
-wn.geometry('800x600')
-# Không cho thay đổi size
-wn.resizable(tk.FALSE, tk.FALSE)
+root = tk.Tk()
+root.title("69 Nguyễn Khang Thịnh, 211103C, Đồ Án Học Phần: Lập trình Python, T8.2023")
+root.geometry('1200x800')
+root.resizable(tk.FALSE, tk.FALSE)
 
-# Tiêu đề form = Lập trình Python phân tích dữ liệu các đội bóng Ngoại hạng Anh mùa 06/07 đến mùa 17/18
+# tạo frames
+mainFrame = tk.Frame(root, width=1200, height=800, background='#a2d7de')
+mainFrame.columnconfigure(0, weight=1)
+mainFrame.columnconfigure(1, weight=1)
+mainFrame.columnconfigure(2, weight=1)
+mainFrame.pack()
+
+# Tiêu đề form
 t = "69 Nguyễn Khang Thịnh, 211103C, Đồ Án Học Phần: Lập trình Python: EDA Car Prices"
-lblDT = tk.Label(wn, text=t, background="yellow", fg="blue", relief=tk.SUNKEN, font=(
-    "Arial Bold", 13), borderwidth=3, width=70, height=3)
-lblDT.place(x=10, y=10)
+lblDT = tk.Label(mainFrame, text=t, background="yellow", fg="blue", relief=tk.SUNKEN, font=(
+    "Arial Bold", 13), borderwidth=3, height=3, width=120)
+lblDT.grid(row=0, column=0, columnspan=3, padx=5, pady=5)
 
 # Các nút lệnh
-# Thoát
-btnThoat = tk.Button(wn, text="Thoát", width=10, height=5, command=Thoat)
-btnThoat.place(x=100, y=135)
-# Xử lý lời nói
-btnNoi = tk.Button(wn, text="Trợ Lý Ảo", width=15, height=5, command=Lenh)
-btnNoi.place(x=200, y=135)
+btnThoat = tk.Button(mainFrame, text="Thoát",
+                     width=15, height=3, command=Thoat)
+btnThoat.grid(row=1, column=0)
+btnNoi = tk.Button(mainFrame, text="Trợ Lý Ảo",
+                   width=15, height=3, command=Lenh)
+btnNoi.grid(row=1, column=1)
+btnEDA = tk.Button(mainFrame, text="EDA",
+                   width=15, height=3, command=EDA)
+btnEDA.grid(row=1, column=2)
 
-lbSpeech = tk.Label(wn, text='', relief=tk.SUNKEN,
-                    borderwidth=2, width=80, height=3)
-lbSpeech.place(x=10, y=250)
+# Label hiển thị nội dung
+lblBody = tk.Label(mainFrame, text='', relief=tk.SUNKEN,
+                   borderwidth=3, width=150, height=35)
+lblBody.grid(row=2, columnspan=3, padx=5, pady=10)
 
 # Lặp vô tận để hiển thị cửa sổ
-wn.mainloop()
+root.mainloop()
