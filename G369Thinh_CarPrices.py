@@ -54,15 +54,18 @@ def Lenh():
 
 
 def EDA():
-    df = pd.read_csv('./G369Thinh_CarPrices/CarPrices.csv')
-    print(df)
+    # df = pd.read_csv('./G369Thinh_CarPrices/CarPrices.csv')
+    # print(df.count().sort_values())
+    pass
 
 
 # B3: Lập GUI
 # Tạo một cửa sổ mới
 root = tk.Tk()
-root.title("69 Nguyễn Khang Thịnh, 211103C, Đồ Án Học Phần: Lập trình Python, T8.2023")
+root.title(
+    "69 Nguyễn Khang Thịnh, 211103C, Đồ Án Học Phần: Lập trình Python, T8.2023")
 root.geometry('1200x800')
+root.pack_propagate()
 root.resizable(tk.FALSE, tk.FALSE)
 
 # tạo frames
